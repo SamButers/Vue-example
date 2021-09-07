@@ -23,6 +23,9 @@
       <label>Nome do usuário</label>
       <input type="text" id="username" v-model="username">
 
+      <label>Sobrenome do usuário</label>
+      <input type="text" id="username" v-model="usersurname">
+
       <label>Número favorito</label>
       <input type="number" id="number" v-model="favoriteNumber">
 
@@ -47,13 +50,13 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'Example',
   data () {
     return {
       greetings: 'Boas-vindas',
-      username: 'usuário',
       favoriteNumber: 0,
       opinions: [
         'Um bom número, eu diria.',
@@ -69,11 +72,31 @@ export default {
     }
   },
   computed: {
+    ...mapState(['name', 'surname']),
+    username: {
+      get () {
+        return this.name
+      },
+
+      set (value) {
+        this.changeName({name: value})
+      }
+    },
+    usersurname: {
+      get () {
+        return this.surname
+      },
+
+      set (value) {
+        this.changeSurname({surname: value})
+      }
+    },
     compliment () {
       return this.opinions[this.favoriteNumber % this.opinions.length]
     }
   },
   methods: {
+    ...mapMutations(['changeName', 'changeSurname']),
     alertClick() {
       alert('Tá clicando aqui por quê, seu palhaço?')
     },
